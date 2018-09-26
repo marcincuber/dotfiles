@@ -1,0 +1,9 @@
+csr_decode() {
+  if [ -z "${1}" ];
+    then
+      echo "Pass in filename";
+      exit 1;
+    else
+      openssl req -in ${1} -noout -text
+  fi
+};

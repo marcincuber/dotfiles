@@ -1,0 +1,12 @@
+# kubectl
+if [ -f $(brew --prefix)/etc/bash_completion.d/kubectl ]; then
+. $(brew --prefix)/etc/bash_completion.d/kubectl
+fi
+
+# brew
+if [ -f $(brew --prefix)/etc/bash_completion.d/kubectl ]; then
+. $(brew --prefix)/etc/bash_completion.d/kubectl
+fi
+
+# awscli
+complete -C aws_completer aws

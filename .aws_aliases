@@ -1,0 +1,6 @@
+function aws_listbyipandname(){
+  aws ec2 describe-instances --query 'Reservations[].Instances[].[PrivateIpAddress,Tags[?Key==`Name`].Value[]]' --output text
+}
+function aws_listbyname(){
+  aws ec2 describe-instances --query 'Reservations[].Instances[].[Tags[?Key==`Name`].Value[]]' --output text
+}
