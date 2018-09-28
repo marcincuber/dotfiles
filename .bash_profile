@@ -17,7 +17,7 @@ fi
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.{profile,bash_prompt,exports,aliases,functions,extra,other_completions,brew_completions,hashicorp_completions,ssl_functions}; do
+for file in ~/.{aws_aliases,profile,bash_prompt,exports,aliases,functions,extra,other_completions,brew_completions,hashicorp_completions,ssl_functions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
