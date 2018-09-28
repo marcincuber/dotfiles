@@ -14,12 +14,13 @@ if [ -f /usr/local/share/bash-completion/bash_completion ]; then
   . /usr/local/share/bash-completion/bash_completion
 fi
 
-source ~/.profile
-source ~/.aliases
-source ~/.other_completions
-source ~/.brew_completions
-source ~/.hashicorp_completions
-source ~/.ssl_functions
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+# * ~/.extra can be used for other settings you don’t want to commit.
+for file in ~/.{profile,bash_prompt,exports,aliases,functions,extra,other_completions,brew_completions,hashicorp_completions,ssl_functions}; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
