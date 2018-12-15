@@ -4,6 +4,7 @@
   lg = log --graph --oneline --decorate
   lga = log --graph --oneline --all --decorate
 	co = checkout
+	ru = remote update -p
 
 	# View abbreviated SHA, description, and history graph of the latest 20 commits
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
@@ -185,3 +186,6 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
+[user]
+	name = marcincuber
+	email = marcincuber@hotmail.com

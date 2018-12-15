@@ -41,6 +41,7 @@ brew install akamai
 brew install awscli
 brew install httpie
 brew install packer
+brew install telnet
 brew install terraform
 brew install vault
 brew install yarn
@@ -102,9 +103,14 @@ brew install tree
 brew install yq
 
 # K8s
+brew install fluxctl
 brew install kubernetes-cli
 brew install kubectx
 brew install kubernetes-helm
+brew install kustomize
+
+# Docker
+brew install hadolint
 
 # brew installing games and fun stuff
 brew install archey

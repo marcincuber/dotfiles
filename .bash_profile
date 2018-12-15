@@ -190,6 +190,18 @@ _akamai_cli_bash_autocomplete() {
 }
 complete -F _akamai_cli_bash_autocomplete akamai
 
+function fingerprint_ssh_key() {
+  # argument ${1} takes in private key and generates fingerprints in different formats
+  #
+  local key_dir=${1}
+  printf "Fingerprints: \n"
+  ssh-keygen -lf /dev/stdin <<< $( ssh-keygen -f ${key_dir} -y )
+  printf "If you created your key pair using third-party tool: \n"
+  openssl rsa -in ${key_dir} -pubout -outform DER | openssl md5 -c
+  printf "If you created your key pair using AWS: \n"
+  openssl pkcs8 -in ${key_dir} -inform PEM -outform DER -topk8 -nocrypt | openssl sha1 -c
+}
+
 function encode_string_base64() {
   if [ -n "$1" ]
   then
@@ -231,9 +243,6 @@ done;
 if type _git &> /dev/null && [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 	complete -o default -o nospace -F _git g;
 fi;
-
-# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
-[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
 
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
