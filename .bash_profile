@@ -98,6 +98,32 @@ function unset_aws_creds(){
   unset ASSUMED_ROLE
 };
 
+function ke(){
+  if [[ -z "${1}" ]]
+    then
+      PS3='Select KUBECONFIG to export: '
+      vars=($(ls -l ~/.kube/kubeconfigs.d/kubeconfig* | grep -o 'kubeconfig.*' | cut -f2- -d-))
+      echo "Execute \"ke \" to export kubeconfig";
+      select opt in "${vars[@]}" ""Quit
+        do
+          if [[ "${opt}" = "Quit" ]]; then
+            echo done
+            break
+          elif [[ "${vars[*]}" == *"${opt}"* ]]; then
+            export KUBECONFIG=~/.kube/kubeconfigs.d/kubeconfig-${opt};
+            kubectl cluster-info
+            break
+          else
+           clear
+           echo bad option
+          fi
+      done
+    else
+      export KUBECONFIG=${1};
+      kubectl cluster-info
+  fi
+};
+
 # Recursively scan through provided directory and cat all files. Used in autocomplete ssh
 recursive_scan() {
   find ${1}/* -type f | sort -u | xargs -r cat | grep "^Host " | awk '{print $2}'
@@ -244,6 +270,11 @@ if type _git &> /dev/null && [ -f /usr/local/etc/bash_completion.d/git-completio
 	complete -o default -o nospace -F _git g;
 fi;
 
+# Enable tab completion for `k` by marking it as an alias for kubectl
+if type __start_kubectl &> /dev/null && [ -f /usr/local/etc/bash_completion.d/kubectl ]; then
+  complete -o default -o nospace -F __start_kubectl k
+fi;
+
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults;
@@ -252,4 +283,4 @@ complete -W "NSGlobalDomain" defaults;
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
 # Some fun
-fortune | cowsay | lolcat
+fortune -o | cowsay | lolcat

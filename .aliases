@@ -14,7 +14,9 @@ alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias p="cd ~/projects"
 alias g="git"
+alias k="kubectl"
 alias work="cd ~/Documents/projects"
+alias watch='watch ' # watch to handle aliased commands
 
 alias v="vim"
 alias rr="rm -rf"
