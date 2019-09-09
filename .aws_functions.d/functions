@@ -1,0 +1,30 @@
+function eks_set_config(){
+  if [[ -z "${1}" ]]
+    then
+      PS3='Select cluster you want to use: '
+      vars=($(aws eks list-clusters --query 'clusters[*]' --output text))
+      echo "Execute \"eks_set_config\" to switch kubeconfig";
+      select opt in "${vars[@]}" ""Quit
+        do
+          if [[ "$opt" = "Quit" ]]; then
+            echo done
+            break
+          elif [[ "${vars[*]}" == *"$opt"* ]]; then
+            if [[ -z "${opt}" ]]; then
+              clear;
+              echo "Incorrect input. Exiting...";
+              break;
+            fi
+            unset KUBECONFIG
+            aws eks update-kubeconfig --name "${opt}"
+            kubectl cluster-info
+            break
+          else
+           clear
+           echo bad option
+          fi
+      done
+    else
+    kubectl cluster-info
+  fi
+};

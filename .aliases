@@ -16,7 +16,8 @@ alias p="cd ~/projects"
 alias g="git"
 alias k="kubectl"
 alias work="cd ~/Documents/projects"
-alias watch='watch ' # watch to handle aliased commands
+alias watch='watch '
+alias s='ssh'
 
 alias v="vim"
 alias rr="rm -rf"
@@ -40,7 +41,7 @@ alias pcurl='curl --silent -o /dev/null -v -H "Pragma: akamai-x-cache-on, akamai
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 
-alias idGroups="id -a | sed 's|,|\n|g'"
+alias listADGroups="id -a | sed 's|,|\n|g'"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -139,7 +140,7 @@ alias map="xargs -n1"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
-  alias "${method}"="lwp-request -m '${method}'"
+	alias "${method}"="lwp-request -m '${method}'"
 done
 
 # Kill all the tabs in Chrome to free up memory
