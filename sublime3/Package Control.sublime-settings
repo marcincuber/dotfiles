@@ -1,0 +1,16 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"ayu",
+		"BeyondCompare",
+		"Package Control",
+		"Pretty JSON",
+		"SideBarEnhancements",
+		"Terrafmt",
+		"Terraform"
+	]
+}
