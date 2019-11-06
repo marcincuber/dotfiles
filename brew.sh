@@ -28,10 +28,10 @@ brew install watch
 brew install watchman
 
 # Switch to using brew-installed bash as default shell
-if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
-  echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
-  chsh -s /usr/local/bin/bash;
-fi;
+#if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
+#  echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
+#  chsh -s /usr/local/bin/bash;
+#fi;
 
 brew install wget
 
@@ -42,6 +42,7 @@ brew install gnupg
 brew install akamai
 brew install awscli
 brew install aws-iam-authenticator
+brew install aws-okta
 brew install httpie
 brew install packer
 brew install telnet
@@ -97,6 +98,7 @@ brew install jq
 brew install git
 brew install git-lfs
 brew install git-crypt
+brew install git-secrets
 brew install htop
 brew install p7zip
 brew install pigz
@@ -115,6 +117,7 @@ brew install kubernetes-cli
 brew install kubectx
 brew install kubernetes-helm
 brew install kustomize
+brew install minikube
 
 # Docker
 brew install hadolint

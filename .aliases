@@ -41,6 +41,9 @@ alias pcurl='curl --silent -o /dev/null -v -H "Pragma: akamai-x-cache-on, akamai
 alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
 
+alias enableFirewall='sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1'
+alias disableFirewall='sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 0'
+
 alias listADGroups="id -a | sed 's|,|\n|g'"
 
 # Detect which `ls` flavor is in use

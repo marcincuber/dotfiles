@@ -4,6 +4,9 @@
 # export PATH="$HOME/bin:$PATH";
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+# export PATH="$PATH:~/.local/bin"
+export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+export PATH="$PATH:$HOME/.rvm/bin"
 
 # Go exports
 export GOPATH=$HOME/Go
@@ -30,7 +33,7 @@ export ZSH="/Users/mcuber/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="tjkirch"
+ZSH_THEME="bureau"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -112,10 +115,10 @@ setopt auto_list # automatically list choices on ambiguous completion
 setopt auto_menu # automatically use menu completion
 setopt always_to_end # move cursor to end if word had one match
 
-export NVM_DIR="$HOME/.nvm"
-[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="${HOME}/.nvm"
+[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"  # This loads nvm
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Load the shell dotfiles, and then some:
 for file in ~/.{aws_aliases,aliases,functions,ssl_functions,aws_functions.d/functions}; do
@@ -123,8 +126,8 @@ for file in ~/.{aws_aliases,aliases,functions,ssl_functions,aws_functions.d/func
 done;
 unset file;
 
-# aws-okta cli autocompletion
-source <(aws-okta completion zsh)
+source <(aws-okta completion zsh) # aws-okta cli autocompletion
+source <(kubectl completion zsh) # kubectl cli autocompletion
 
 # akamai cli autocompletion
 autoload -U compinit && compinit
@@ -144,5 +147,3 @@ complete -F _akamai_cli_bash_autocomplete akamai
 neofetch --ascii "$(fortune -o |cowsay -W 50)" |lolcat
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-
-source <(kubectl completion zsh)
