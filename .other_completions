@@ -1,9 +1,0 @@
-# docker
-if [ -f ~/Documents/bash-it/completion/available/docker.completion.bash ]; then
-. ~/Documents/bash-it/completion/available/docker.completion.bash
-fi
-
-# docker-compose
-if [ -f ~/Documents/bash-it/completion/available/docker-compose.completion.bash ]; then
-. ~/Documents/bash-it/completion/available/docker-compose.completion.bash
-fi

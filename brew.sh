@@ -21,18 +21,9 @@ brew install gnu-sed
 # Install Bash 4.
 # Note: don’t forget to add `/usr/local/bin/bash` to `/etc/shells` before
 # running `chsh`.
-brew install bash
-brew install bash-completion
 
 brew install watch
 brew install watchman
-
-# Switch to using brew-installed bash as default shell
-#if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
-#  echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
-#  chsh -s /usr/local/bin/bash;
-#fi;
-
 brew install wget
 
 # Install GnuPG to enable PGP-signing commits.
@@ -46,7 +37,7 @@ brew install aws-okta
 brew install httpie
 brew install packer
 brew install telnet
-brew install terraform
+brew install tfenv
 brew install vault
 brew install yarn
 
@@ -56,7 +47,6 @@ brew install grep
 brew install openssh
 brew install openssl
 brew install screen
-brew install thefuck
 brew install make
 
 # Install font tools.
@@ -76,8 +66,6 @@ brew install dns2tcp
 brew install fcrackzip
 brew install foremost
 brew install hashpump
-brew install hydra
-brew install john
 brew install knock
 brew install netpbm
 brew install nmap
@@ -89,7 +77,6 @@ brew install tcpreplay
 brew install tcptrace
 brew install ucspi-tcp # `tcpserver` etc.
 brew install xpdf
-brew install xz
 
 # Install other useful binaries.
 brew install ack
@@ -132,9 +119,11 @@ brew install fortune
 brew install nethack
 brew install sl
 brew install speedtest_cli
-brew install toilet
-brew install wakeonlan
 brew install youtube-dl
+brew install neofetch
+brew install lolcat
+
+brew cask install aerial
 
 # Remove outdated versions from the cellar.
 brew cleanup
