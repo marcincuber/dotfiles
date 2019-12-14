@@ -5,8 +5,10 @@
 	],
 	"installed_packages":
 	[
+		"A File Icon",
 		"ayu",
 		"BeyondCompare",
+		"Dockerfile Syntax Highlighting",
 		"Markdown HTML Preview",
 		"MarkdownLivePreview",
 		"Package Control",
