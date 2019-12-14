@@ -7,8 +7,11 @@
 	[
 		"ayu",
 		"BeyondCompare",
+		"Markdown HTML Preview",
+		"MarkdownLivePreview",
 		"Package Control",
 		"Pretty JSON",
+		"Pretty YAML",
 		"SideBarEnhancements",
 		"Terrafmt",
 		"Terraform"
