@@ -1,0 +1,8 @@
+[user]
+	name = marcincuber
+	email = marcin.cuber@umotif.com
+	signingkey = 75A37E6728065865
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true

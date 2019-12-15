@@ -186,11 +186,10 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
-[user]
-	name = marcincuber
-	email = marcin.cuber@umotif.com
-	signingkey = 75A37E6728065865
-[gpg]
-	program = gpg
-[commit]
-	gpgsign = true
+# when working with github
+[includeIf "gitdir:**/github/**/.git"]
+  path = .config.github
+
+# when working with gitlab
+[includeIf "gitdir:**/gitlab/**/.git"]
+  path = .config.gitlab
