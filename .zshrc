@@ -29,6 +29,9 @@ zstyle :compinstall filename '/Users/mcuber/.zshrc'
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/mcuber/.oh-my-zsh"
 
+# required for GPG signing when gnupg2 and gpg-agent 2.x are used
+export GPG_TTY=$(tty)
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME

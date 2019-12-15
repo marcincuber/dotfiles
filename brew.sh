@@ -28,6 +28,7 @@ brew install wget
 
 # Install GnuPG to enable PGP-signing commits.
 brew install gnupg
+brew install pinentry-mac
 
 # Install tools
 brew install akamai

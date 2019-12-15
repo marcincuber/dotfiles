@@ -18,20 +18,6 @@ To update, `cd` into your local `dotfiles` repository and then:
 source bootstrap.sh
 ```
 
-### Add custom commands without creating a new fork
-
-If `~/.extra` exists, it will be sourced along with the other files. You can use this to add a few custom commands without the need to fork this entire repository, or to add commands you don’t want to commit to a public repository.
-
-```bash
-# Git credentials
-GIT_AUTHOR_NAME="Marcin Cuber"
-GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
-git config --global user.name "marcincuber"
-GIT_AUTHOR_EMAIL="marcincuber@hotmail.com"
-GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-git config --global user.email "$GIT_AUTHOR_EMAIL"
-```
-
 ### Install and pull packages
 
 ```bash
@@ -41,6 +27,11 @@ git config --global user.email "$GIT_AUTHOR_EMAIL"
 
 ```bash
 ./brew.sh
+```
+
+```bash
+cd sublime3
+./sublime.sh
 ```
 
 ## Author
