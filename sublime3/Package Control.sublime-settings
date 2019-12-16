@@ -6,6 +6,7 @@
 	"installed_packages":
 	[
 		"A File Icon",
+		"All Autocomplete",
 		"ayu",
 		"BeyondCompare",
 		"Dockerfile Syntax Highlighting",
@@ -15,6 +16,7 @@
 		"Pretty JSON",
 		"Pretty YAML",
 		"SideBarEnhancements",
+		"SublimeLinter",
 		"Terrafmt",
 		"Terraform"
 	]
