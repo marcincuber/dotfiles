@@ -14,8 +14,6 @@ export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
-export ZSH="/Users/mcuber/.oh-my-zsh"
-
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
@@ -31,6 +29,8 @@ export ZSH="/Users/mcuber/.oh-my-zsh"
 
 # required for GPG signing when gnupg2 and gpg-agent 2.x are used
 export GPG_TTY=$(tty)
+# required to fix issues with kubectl
+export KUBE_EDITOR="vim"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -150,3 +150,6 @@ complete -F _akamai_cli_bash_autocomplete akamai
 neofetch --ascii "$(fortune -o |cowsay -W 50)" |lolcat
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
+# nr1 autocomplete setup
+NR1_AC_ZSH_SETUP_PATH=/Users/mcuber/Library/Caches/newrelic-cli/autocomplete/zsh_setup && test -f ${NR1_AC_ZSH_SETUP_PATH} && source ${NR1_AC_ZSH_SETUP_PATH};
