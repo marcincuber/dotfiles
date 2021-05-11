@@ -177,6 +177,7 @@ function unset_aws_creds(){
   unset AWS_ACCESS_KEY_ID
   unset AWS_DEFAULT_PROFILE
   unset ASSUMED_ROLE
+  unset AWS_REGION
 };
 
 # set_aws_assumerole uses assume-role script, brew install assume-role
@@ -271,6 +272,11 @@ function set_okta_aws_assumerole(){
           break;
         fi
 
+        if [[ "${opt}" == *"china"* ]]; then
+          echo "Assuming role in China!"
+          export AWS_REGION=cn-north-1
+        fi
+
         role="okta-${opt}";
         echo "Assuming role named: ${role}";
         creds=$(aws-okta exec "${role}" -- sh -c set | grep \^AWS)
@@ -295,6 +301,42 @@ function set_okta_aws_assumerole(){
         break;
       fi
     done
+};
+
+function set_aws2saml_assumerole(){
+  PROFILES=($(cat ~/.saml2aws | sed -n 's/.*\[\([^]]*\)\].*/\1/p' | tr '\r\n' '\ '))
+  PS3='Select an AWS profile to assume: '
+  select opt in "${PROFILES[@]}" ""Quit
+ 
+  do
+    if [[ "${opt}" = "Quit" ]]; then
+      echo "Quitting...";
+      return 0;
+    else
+      # PROFILE=$(echo $opt | tr -d '"')
+      PROFILE="${opt}";
+      echo "${PROFILE}";
+       
+      if [[ -z "${opt}" ]]; then
+        clear;
+        echo "Incorrect input. Exiting...";
+        return 1;
+      fi
+
+      break;
+    fi
+  done
+
+  saml2aws login -a ${PROFILE} --force
+  if [ $? -eq 0 ]
+  then
+    export AWS_PROFILE=${PROFILE}
+    export AWS_REGION=$(aws configure get region)
+    echo 
+    echo "[Assumed]: AWS profile: ${PROFILE} in region ${AWS_REGION} has been set"
+  else
+    echo "Failed to assume AWS IAM Role"
+  fi
 };
 
 # Recursively scan through provided directory and cat all files. Used in autocomplete ssh
