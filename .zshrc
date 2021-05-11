@@ -4,19 +4,23 @@
 # export PATH="$HOME/bin:$PATH";
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+export PATH="$HOME/sessionmanager-bundle/bin:$PATH"
 # export PATH="$PATH:~/.local/bin"
 export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 # Go exports
-export GOPATH=$HOME/Go
+export GOPATH=$HOME/Documents/projects/go
 export GOROOT=/usr/local/opt/go/libexec
+export GOBIN="$GOPATH/bin"
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
+
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/Users/mcuber/.zshrc'
@@ -132,6 +136,9 @@ unset file;
 source <(aws-okta completion zsh) # aws-okta cli autocompletion
 source <(kubectl completion zsh) # kubectl cli autocompletion
 
+# auto-completion saml2aws
+eval "$(saml2aws --completion-script-zsh)"
+
 # akamai cli autocompletion
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
@@ -152,4 +159,4 @@ neofetch --ascii "$(fortune -o |cowsay -W 50)" |lolcat
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 # nr1 autocomplete setup
-NR1_AC_ZSH_SETUP_PATH=/Users/mcuber/Library/Caches/newrelic-cli/autocomplete/zsh_setup && test -f ${NR1_AC_ZSH_SETUP_PATH} && source ${NR1_AC_ZSH_SETUP_PATH};
+NR1_AC_ZSH_SETUP_PATH=/Users/mcuber/Library/Caches/newrelic-cli/autocomplete/zsh_setup && test -f ${NR1_AC_ZSH_SETUP_PATH} && source ${NR1_AC_ZSH_SETUP_PATH};export PATH="/usr/local/opt/python@3.8/bin:$PATH"
