@@ -34,6 +34,7 @@ brew install akamai
 brew install awscli
 brew install aws-iam-authenticator
 brew install aws-okta
+brew install saml2aws
 brew install httpie
 brew install packer
 brew install telnet
@@ -110,9 +111,7 @@ brew install minikube
 brew install hadolint
 
 # brew installing games and fun stuff
-brew install archey
 brew install cheat
-brew install cmatrix
 brew install cowsay
 brew install figlet
 brew install fortune
