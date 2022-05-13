@@ -1,35 +1,36 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# export PATH="$HOME/bin:$PATH";
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-export PATH="/usr/local/opt/openssl/bin:$PATH"
-export PATH="$HOME/sessionmanager-bundle/bin:$PATH"
-# export PATH="$PATH:~/.local/bin"
-export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="$HOME/Library/Python/3.9/bin:$PATH"
+
+export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
+export PATH="$(brew --prefix)/opt/binutils/bin:$PATH"
+export PATH="$(brew --prefix)/opt/ssh-copy-id/bin:$PATH"
 
 # Go exports
-export GOPATH=$HOME/Documents/projects/go
+export GOPATH="${HOME}/Documents/projects/go"
 export GOROOT=/usr/local/opt/go/libexec
-export GOBIN="$GOPATH/bin"
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
-
+export GOBIN="${GOPATH}/bin"
+export PATH="${PATH}:${GOPATH}/bin"
+export PATH="${PATH}:${GOROOT}/bin"
 
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/mcuber/.zshrc'
+zstyle :compinstall filename '/Users/marcin/.zshrc'
 
 # zstyle ':completion:*:ssh:*' hosts off
 # zstyle ':completion:*:ssh:*' config on
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/mcuber/.oh-my-zsh"
+export ZSH="/Users/marcin/.oh-my-zsh"
 
 # required for GPG signing when gnupg2 and gpg-agent 2.x are used
 export GPG_TTY=$(tty)
@@ -112,7 +113,7 @@ plugins=(
 autoload -Uz compinit
 compinit
 
-source $ZSH/oh-my-zsh.sh
+source "${ZSH}/oh-my-zsh.sh"
 
 setopt hist_ignore_all_dups # remove older duplicate entries from history
 setopt hist_reduce_blanks # remove superfluous blanks from history items
@@ -133,30 +134,20 @@ for file in ~/.{aws_aliases,aliases,functions,ssl_functions,aws_functions.d/func
 done;
 unset file;
 
-source <(aws-okta completion zsh) # aws-okta cli autocompletion
 source <(kubectl completion zsh) # kubectl cli autocompletion
+source <(flux completion zsh) # flux cli autocompletion
 
 # auto-completion saml2aws
 eval "$(saml2aws --completion-script-zsh)"
 
-# akamai cli autocompletion
-autoload -U compinit && compinit
-autoload -U bashcompinit && bashcompinit
-_akamai_cli_bash_autocomplete() {
-    local cur opts base
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    opts=$( ${COMP_WORDS[@]:0:$COMP_CWORD} --generate-auto-complete )
-    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-    return 0
-}
-
-complete -F _akamai_cli_bash_autocomplete akamai
-
 # Fun
-neofetch --ascii "$(fortune -o |cowsay -W 50)" |lolcat
+neofetch --ascii "$(fortune |cowsay -W 50)" |lolcat
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
-# nr1 autocomplete setup
-NR1_AC_ZSH_SETUP_PATH=/Users/mcuber/Library/Caches/newrelic-cli/autocomplete/zsh_setup && test -f ${NR1_AC_ZSH_SETUP_PATH} && source ${NR1_AC_ZSH_SETUP_PATH};export PATH="/usr/local/opt/python@3.8/bin:$PATH"
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/marcin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/marcin/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/marcin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/marcin/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
