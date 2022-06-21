@@ -13,11 +13,9 @@ export PATH="$(brew --prefix)/opt/binutils/bin:$PATH"
 export PATH="$(brew --prefix)/opt/ssh-copy-id/bin:$PATH"
 
 # Go exports
-export GOPATH="${HOME}/Documents/projects/go"
-export GOROOT=/usr/local/opt/go/libexec
-export GOBIN="${GOPATH}/bin"
-export PATH="${PATH}:${GOPATH}/bin"
-export PATH="${PATH}:${GOROOT}/bin"
+export GOPATH=$HOME/go
+export GOROOT="$(brew --prefix golang)/libexec"
+export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
 
 HISTFILE=~/.histfile
 HISTSIZE=100000
