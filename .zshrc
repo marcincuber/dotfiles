@@ -136,6 +136,7 @@ unset file;
 
 source <(kubectl completion zsh) # kubectl cli autocompletion
 source <(flux completion zsh) # flux cli autocompletion
+source <(stern --completion=zsh) # stern cli autocompletion
 
 # auto-completion saml2aws
 eval "$(saml2aws --completion-script-zsh)"
