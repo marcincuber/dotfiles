@@ -70,6 +70,7 @@ brew install kubernetes-cli
 brew install kubernetes-helm
 brew install kustomize
 brew install minikube
+brew install stern
 
 # Docker
 brew install hadolint
