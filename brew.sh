@@ -65,12 +65,16 @@ brew install tree
 brew install yq
 
 # K8s
-brew install fluxctl
+brew install fluxcd/tap/flux
 brew install kubernetes-cli
 brew install kubernetes-helm
 brew install kustomize
 brew install minikube
 brew install stern
+
+# Python
+brew install pipx && pipx ensurepath
+pipx install aws-export-credentials
 
 # Docker
 brew install hadolint
