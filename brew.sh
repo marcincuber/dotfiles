@@ -72,6 +72,12 @@ brew install kustomize
 brew install minikube
 brew install stern
 
+brew tap aws/tap
+brew install eks-node-viewer
+
+# Redis
+brew install --cask another-redis-desktop-manager
+
 # Python
 brew install pipx && pipx ensurepath
 pipx install aws-export-credentials
