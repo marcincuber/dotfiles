@@ -105,7 +105,6 @@ plugins=(
   nmap
   ssh-agent
   terraform
-  zsh-completions
 )
 
 autoload -Uz compinit
