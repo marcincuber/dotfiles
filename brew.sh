@@ -33,7 +33,7 @@ brew install awscli
 brew install aws-iam-authenticator
 brew install saml2aws
 brew install telnet
-brew install tfenv
+brew install tenv
 
 # Install more recent versions of some macOS tools.
 brew install grep # export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
