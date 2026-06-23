@@ -13,9 +13,8 @@ function doIt() {
 		--exclude "LICENSE-MIT.txt" \
 		--exclude "install_pkgs.sh" \
 		--exclude "brew.sh" \
-		--exclude "sublime3/" \
 		-avh --no-perms . ~;
-	source ~/.bash_profile;
+	source ~/.zshrc;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

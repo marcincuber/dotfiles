@@ -126,7 +126,7 @@ export NVM_DIR="${HOME}/.nvm"
 [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Load the shell dotfiles, and then some:
-for file in ~/.{aws_aliases,aliases,functions,ssl_functions,aws_functions.d/functions}; do
+for file in ~/.{exports,aws_aliases,aliases,functions,ssl_functions,aws_functions.d/functions}; do
   [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file";
 done;
 unset file;

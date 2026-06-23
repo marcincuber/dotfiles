@@ -79,9 +79,7 @@ function dataurl() {
 function server() {
 	local port="${1:-8000}";
 	sleep 1 && open "http://localhost:${port}/" &
-	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+	python3 -m http.server "$port";
 }
 
 # Start a PHP server from a directory, optionally specifying the port
@@ -279,17 +277,12 @@ function set_okta_aws_assumerole(){
 
         role="okta-${opt}";
         echo "Assuming role named: ${role}";
-        creds=$(aws-okta exec "${role}" -- sh -c set | grep \^AWS)
+        creds=$(aws-okta exec "${role}" -- sh -c 'env | grep ^AWS_')
 
-        AWS_ACCESS_KEY_ID=$(echo "${creds}" | grep \^AWS_ACCESS_KEY_ID=)
-        AWS_SECRET_ACCESS_KEY=$(echo "${creds}" | grep \^AWS_SECRET_ACCESS_KEY=)
-        AWS_SECURITY_TOKEN=$(echo "${creds}" | grep \^AWS_SECURITY_TOKEN=)
-        AWS_SESSION_TOKEN=$(echo "${creds}" | grep \^AWS_SESSION_TOKEN=)
-
-        export ${AWS_ACCESS_KEY_ID}
-        export ${AWS_SECRET_ACCESS_KEY}
-        export ${AWS_SECURITY_TOKEN}
-        export ${AWS_SESSION_TOKEN}
+        export AWS_ACCESS_KEY_ID=$(echo "${creds}" | grep ^AWS_ACCESS_KEY_ID= | cut -d= -f2-)
+        export AWS_SECRET_ACCESS_KEY=$(echo "${creds}" | grep ^AWS_SECRET_ACCESS_KEY= | cut -d= -f2-)
+        export AWS_SECURITY_TOKEN=$(echo "${creds}" | grep ^AWS_SECURITY_TOKEN= | cut -d= -f2-)
+        export AWS_SESSION_TOKEN=$(echo "${creds}" | grep ^AWS_SESSION_TOKEN= | cut -d= -f2-)
 
         account_aliases=$(aws iam list-account-aliases --query 'AccountAliases' --output text);
         account_id=$(aws sts get-caller-identity --query 'Account' --output text);
