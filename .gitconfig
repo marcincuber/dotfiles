@@ -1,8 +1,8 @@
 [alias]
 
-  graph = log --graph --pretty=format:'%C(auto)%h%d %s %C(bold cyan)[%an]'
-  lg = log --graph --oneline --decorate
-  lga = log --graph --oneline --all --decorate
+	graph = log --graph --pretty=format:'%C(auto)%h%d %s %C(bold cyan)[%an]'
+	lg = log --graph --oneline --decorate
+	lga = log --graph --oneline --all --decorate
 	co = checkout
 	ru = remote update -p
 
@@ -186,10 +186,15 @@
 [url "git://gist.github.com/"]
 
 	insteadOf = "gist:"
-# when working with github
-[includeIf "gitdir:**/github/**/.git"]
-  path = .config.github
+[user]
 
-# when working with gitlab
-[includeIf "gitdir:**/gitlab/**/.git"]
-  path = .config.gitlab
+	name = marcincuber
+	email = marcincuber@hotmail.com
+
+# when working with github — overrides [user] above for repos inside any github/ directory
+[includeIf "gitdir:**/github/**"]
+	path = ~/.config.github
+
+# when working with gitlab — overrides [user] above for repos inside any gitlab/ directory
+[includeIf "gitdir:**/gitlab/**"]
+	path = ~/.config.gitlab
