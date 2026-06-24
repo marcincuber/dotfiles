@@ -18,6 +18,9 @@ export PATH="${BREW_PREFIX}/opt/openssl@3/bin:$PATH"
 export GOPATH=$HOME/go
 export PATH="$PATH:${GOPATH}/bin"
 
+# Add Visual Studio Code (code)
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
@@ -35,6 +38,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export GPG_TTY=$(tty)
 # required to fix issues with kubectl
 export KUBE_EDITOR="vim"
+
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -101,7 +105,6 @@ ZSH_THEME="bureau"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  docker
   git
   nmap
   ssh-agent
@@ -124,9 +127,10 @@ setopt always_to_end # move cursor to end if word had one match
 export NVM_DIR="${HOME}/.nvm"
 [[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"  # This loads nvm
 
-[[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+export RVM_DIR="${HOME}/.rvm"
+[[ -s "${RVM_DIR}/scripts/rvm" ]] && source "${RVM_DIR}/scripts/rvm" # Load RVM into a shell session *as a function*
 
-# Load the shell dotfiles, and then some:
+# Load the shell dotfiles, and then source:
 for file in ~/.{exports,aws_aliases,aliases,functions,ssl_functions}; do
   [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file";
 done;
@@ -136,6 +140,12 @@ command -v kubectl &>/dev/null && source <(kubectl completion zsh)
 command -v flux &>/dev/null && source <(flux completion zsh)
 command -v stern &>/dev/null && source <(stern --completion=zsh)
 command -v saml2aws &>/dev/null && eval "$(saml2aws --completion-script-zsh)"
+
+# aws cli autocomplete — bashcompinit provides the bash-compatible `complete -C` shim required by aws_completer
+if command -v aws_completer &>/dev/null; then
+  autoload bashcompinit && bashcompinit
+  complete -C "$(command -v aws_completer)" aws
+fi
 
 # Fun
 [[ -o interactive ]] && fastfetch --file <(fortune | cowsay -W 50) 
