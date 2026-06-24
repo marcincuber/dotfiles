@@ -29,11 +29,6 @@ source bootstrap.sh
 ./brew.sh
 ```
 
-```bash
-cd sublime3
-./sublime.sh
-```
-
 ## Author
 
 [Marcin Cuber](https://github.com/marcincuber)
