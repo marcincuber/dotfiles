@@ -127,7 +127,7 @@ export NVM_DIR="${HOME}/.nvm"
 [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Load the shell dotfiles, and then some:
-for file in ~/.{exports,aws_aliases,aliases,functions,ssl_functions,aws_functions.d/functions}; do
+for file in ~/.{exports,aws_aliases,aliases,functions,ssl_functions}; do
   [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file";
 done;
 unset file;
@@ -138,7 +138,7 @@ command -v stern &>/dev/null && source <(stern --completion=zsh)
 command -v saml2aws &>/dev/null && eval "$(saml2aws --completion-script-zsh)"
 
 # Fun
-[[ -o interactive ]] && neofetch --ascii "$(fortune | cowsay -W 50)" | lolcat
+[[ -o interactive ]] && fastfetch --file <(fortune | cowsay -W 50) 
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 

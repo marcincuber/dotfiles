@@ -66,7 +66,7 @@ brew install yq
 
 # K8s
 brew install fluxcd/tap/flux
-brew install kubernetes-cli
+brew install kubectl
 brew install helm
 brew install kustomize
 brew install minikube
