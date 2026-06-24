@@ -187,9 +187,8 @@
 
 	insteadOf = "gist:"
 [user]
-
 	name = marcincuber
-	email = marcincuber@hotmail.com
+	email = 5611060+marcincuber@users.noreply.github.com
 
 # when working with github — overrides [user] above for repos inside any github/ directory
 [includeIf "gitdir:**/github/**"]
