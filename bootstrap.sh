@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE}")";
 
-git pull origin master;
+git pull origin main;
 
 function doIt() {
 	rsync --exclude ".git/" \
