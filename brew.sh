@@ -66,8 +66,8 @@ brew install yq
 
 # K8s
 brew install fluxcd/tap/flux
-brew install kubernetes-cli
-brew install kubernetes-helm
+brew install kubectl
+brew install helm
 brew install kustomize
 brew install minikube
 brew install stern
@@ -86,16 +86,12 @@ pipx install aws-export-credentials
 brew install hadolint
 
 # brew installing games and fun stuff
-brew install cheat
 brew install cowsay
-brew install figlet
 brew install fortune
 brew install sl
-brew install neofetch
-brew install lolcat
+brew install fastfetch
 
 # Casks (GUI applications)
-brew install --cask aerial
 
 # Remove outdated versions from the cellar.
 brew cleanup

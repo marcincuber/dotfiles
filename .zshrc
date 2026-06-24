@@ -2,33 +2,34 @@
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
-export PATH="$HOME/Library/Python/3.9/bin:$PATH"
+export PATH="$(python3 -m site --user-base)/bin:$PATH"
 
-export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
-export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$PATH"
-export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
-export PATH="$(brew --prefix)/opt/binutils/bin:$PATH"
-export PATH="$(brew --prefix)/opt/ssh-copy-id/bin:$PATH"
+BREW_PREFIX=$(brew --prefix)
+export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
+export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
+export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="${BREW_PREFIX}/opt/make/libexec/gnubin:$PATH"
+export PATH="${BREW_PREFIX}/opt/binutils/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/ssh-copy-id/bin:$PATH"
+export PATH="${BREW_PREFIX}/opt/openssl@3/bin:$PATH"
 
 # Go exports
 export GOPATH=$HOME/go
-export GOROOT="$(brew --prefix golang)/libexec"
-export PATH="$PATH:${GOPATH}/bin:${GOROOT}/bin"
+export PATH="$PATH:${GOPATH}/bin"
 
 HISTFILE=~/.histfile
 HISTSIZE=100000
 SAVEHIST=100000
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/marcin/.zshrc'
+zstyle :compinstall filename "${ZDOTDIR:-$HOME}/.zshrc"
 
 # zstyle ':completion:*:ssh:*' hosts off
 # zstyle ':completion:*:ssh:*' config on
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/marcin/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # required for GPG signing when gnupg2 and gpg-agent 2.x are used
 export GPG_TTY=$(tty)
@@ -108,7 +109,7 @@ plugins=(
 )
 
 autoload -Uz compinit
-compinit
+compinit -C
 
 source "${ZSH}/oh-my-zsh.sh"
 
@@ -126,26 +127,23 @@ export NVM_DIR="${HOME}/.nvm"
 [[ -s "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Load the shell dotfiles, and then some:
-for file in ~/.{aws_aliases,aliases,functions,ssl_functions,aws_functions.d/functions}; do
+for file in ~/.{exports,aws_aliases,aliases,functions,ssl_functions}; do
   [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file";
 done;
 unset file;
 
-source <(kubectl completion zsh) # kubectl cli autocompletion
-source <(flux completion zsh) # flux cli autocompletion
-source <(stern --completion=zsh) # stern cli autocompletion
-
-# auto-completion saml2aws
-eval "$(saml2aws --completion-script-zsh)"
+command -v kubectl &>/dev/null && source <(kubectl completion zsh)
+command -v flux &>/dev/null && source <(flux completion zsh)
+command -v stern &>/dev/null && source <(stern --completion=zsh)
+command -v saml2aws &>/dev/null && eval "$(saml2aws --completion-script-zsh)"
 
 # Fun
-neofetch --ascii "$(fortune |cowsay -W 50)" |lolcat
+[[ -o interactive ]] && fastfetch --file <(fortune | cowsay -W 50) 
 
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/marcin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/marcin/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "${HOME}/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/marcin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/marcin/google-cloud-sdk/completion.zsh.inc'; fi
-export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
+if [ -f "${HOME}/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/google-cloud-sdk/completion.zsh.inc"; fi
