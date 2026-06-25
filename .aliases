@@ -164,3 +164,7 @@ alias path='echo -e ${PATH//:/\\n}'
 
 # Google Cloud
 alias gcssh='gcloud compute ssh'
+
+# show process usages
+alias memtop10='top -l 1 -i 1 -o mem -n 10 -stats pid,command,mem,rprvt,purg,vsize,user'
+alias cputop10='top -l 1 -o cpu -n 10 -stats pid,command,cpu,time,threads,user'
