@@ -1,18 +1,24 @@
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 
-BREW_PREFIX=$(brew --prefix)
-export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
-export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
-export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="${BREW_PREFIX}/opt/make/libexec/gnubin:$PATH"
-export PATH="${BREW_PREFIX}/opt/binutils/bin:$PATH"
-export PATH="${BREW_PREFIX}/opt/ssh-copy-id/bin:$PATH"
-export PATH="${BREW_PREFIX}/opt/openssl@3/bin:$PATH"
+if [[ -x "${HOME}/.homebrew/bin/brew" ]]; then
+  eval "$("${HOME}/.homebrew/bin/brew" shellenv)"
+elif [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if command -v brew &>/dev/null; then
+  BREW_PREFIX=$(brew --prefix)
+  export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/make/libexec/gnubin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/binutils/bin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/ssh-copy-id/bin:$PATH"
+  export PATH="${BREW_PREFIX}/opt/openssl@3/bin:$PATH"
+fi
 
 # Go exports
 export GOPATH=$HOME/go

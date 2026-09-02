@@ -23,6 +23,33 @@ source bootstrap.sh
 ```bash
 ./install_pkgs.sh
 ```
+
+Install only NVM or RVM, or install both selectively:
+
+```bash
+./install_pkgs.sh --nvm
+./install_pkgs.sh --rvm
+./install_pkgs.sh --nvm --rvm
+```
+
+Use `./install_pkgs.sh --all` to explicitly install every supported package.
+
+To install Homebrew under `~/.homebrew` without sudo or administrator access:
+
+```bash
+./install_pkgs.sh --rootless-brew
+```
+
+Combine it with `--all` to use rootless Homebrew while installing everything:
+
+```bash
+./install_pkgs.sh --all --rootless-brew
+```
+
+This uses a nonstandard Homebrew prefix. Some formulae may need to build from
+source, and casks or packages requiring system-level changes will still not work
+without administrator access. A working Git installation is required.
+
 ### Install Homebrew formulae
 
 ```bash

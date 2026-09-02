@@ -1,37 +1,126 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ROOTLESS_BREW=false
+ROOTLESS_BREW_PREFIX="${HOME}/.homebrew"
+INSTALL_ALL=false
+INSTALL_BREW=false
+INSTALL_NVM=false
+INSTALL_RVM=false
+INSTALL_OH_MY_ZSH=false
+SELECTION_MADE=false
+
+usage() {
+  cat <<EOF
+Usage: ${0##*/} [OPTIONS]
+
+  -a, --all             Install Homebrew, Oh My Zsh, RVM, and NVM.
+  -n, --nvm             Install NVM only.
+  -r, --rvm             Install RVM only.
+      --rootless-brew   Install Homebrew under ${ROOTLESS_BREW_PREFIX} without sudo.
+  -h, --help            Show this help.
+
+With no options, the script behaves like --all. Options can be combined.
+Use --all --rootless-brew to install everything with rootless Homebrew.
+EOF
+}
+
+while (( $# > 0 )); do
+  case "$1" in
+    -a|--all)
+      INSTALL_ALL=true
+      SELECTION_MADE=true
+      ;;
+    -n|--nvm)
+      INSTALL_NVM=true
+      SELECTION_MADE=true
+      ;;
+    -r|--rvm)
+      INSTALL_RVM=true
+      SELECTION_MADE=true
+      ;;
+    --rootless-brew)
+      ROOTLESS_BREW=true
+      INSTALL_BREW=true
+      SELECTION_MADE=true
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "error: unknown option: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+if [[ "${SELECTION_MADE}" == false || "${INSTALL_ALL}" == true ]]; then
+  INSTALL_BREW=true
+  INSTALL_NVM=true
+  INSTALL_RVM=true
+  INSTALL_OH_MY_ZSH=true
+fi
+
 # Install Homebrew
-if ! command -v brew &>/dev/null; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-else
-  echo "brew already installed, skipping."
+if [[ "${INSTALL_BREW}" == true ]]; then
+  if [[ "${ROOTLESS_BREW}" == true ]]; then
+    if [[ -x "${ROOTLESS_BREW_PREFIX}/bin/brew" ]]; then
+      echo "Rootless Homebrew already installed, activating it."
+    else
+      if ! command -v git &>/dev/null || ! git --version &>/dev/null; then
+        echo "error: rootless Homebrew installation requires a working git command" >&2
+        exit 1
+      elif [[ -e "${ROOTLESS_BREW_PREFIX}" ]]; then
+        echo "error: ${ROOTLESS_BREW_PREFIX} already exists but does not contain a working brew" >&2
+        exit 1
+      fi
+
+      echo "Installing Homebrew without admin access in ${ROOTLESS_BREW_PREFIX}."
+      echo "Note: the nonstandard prefix is unsupported and some formulae may build from source."
+      git clone --depth=1 https://github.com/Homebrew/brew "${ROOTLESS_BREW_PREFIX}"
+    fi
+
+    eval "$("${ROOTLESS_BREW_PREFIX}/bin/brew" shellenv)"
+  elif ! command -v brew &>/dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  else
+    echo "brew already installed, skipping."
+  fi
 fi
 
 # Install oh-my-zsh
-if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-  echo "oh-my-zsh already installed, skipping."
+if [[ "${INSTALL_OH_MY_ZSH}" == true ]]; then
+  if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  else
+    echo "oh-my-zsh already installed, skipping."
+  fi
 fi
 
 # Install RVM
-if ! command -v rvm &>/dev/null; then
-  curl -sSL https://get.rvm.io | bash
-else
-  echo "rvm already installed, skipping."
+if [[ "${INSTALL_RVM}" == true ]]; then
+  if [[ ! -s "${HOME}/.rvm/scripts/rvm" ]]; then
+    curl -sSL https://get.rvm.io | bash
+  else
+    echo "rvm already installed, skipping."
+  fi
 fi
 
 # Install NVM (Node Version Manager) — resolves latest release tag from GitHub
 # Checked via ~/.nvm directory: nvm is a shell function, not a binary, so command -v won't find it
-if [[ ! -d "${HOME}/.nvm" ]]; then
-  NVM_VERSION=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest \
-    | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
-  if [[ -z "${NVM_VERSION}" ]]; then
-    echo "error: could not resolve latest nvm version from GitHub API" >&2
-    exit 1
+if [[ "${INSTALL_NVM}" == true ]]; then
+  if [[ ! -d "${HOME}/.nvm" ]]; then
+    NVM_VERSION=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest \
+      | python3 -c "import sys, json; print(json.load(sys.stdin)['tag_name'])")
+    if [[ -z "${NVM_VERSION}" ]]; then
+      echo "error: could not resolve latest nvm version from GitHub API" >&2
+      exit 1
+    fi
+    curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
+  else
+    echo "nvm already installed, skipping."
   fi
-  curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
-else
-  echo "nvm already installed, skipping."
 fi

@@ -34,6 +34,7 @@ brew install aws-iam-authenticator
 brew install saml2aws
 brew install telnet
 brew install tenv
+brew install terraform-docs
 
 # Install more recent versions of some macOS tools.
 brew install grep # export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:$PATH"
@@ -60,14 +61,17 @@ brew install htop
 brew install p7zip
 brew install pwgen
 brew install rename
+brew install shellcheck
 brew install ssh-copy-id # export PATH="$(brew --prefix)/opt/ssh-copy-id/bin:$PATH"
 brew install tree
 brew install yq
 
 # K8s
+brew install argocd
 brew install fluxcd/tap/flux
 brew install kubectl
 brew install helm
+brew install kubeconform
 brew install kustomize
 brew install minikube
 brew install stern
