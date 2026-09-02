@@ -58,4 +58,5 @@ without administrator access. A working Git installation is required.
 
 ## Author
 
-[Marcin Cuber](https://github.com/marcincuber)
+[Marcin Cuber](marcincuber.github.io)
+[Native Cube Tools](https://native-cube.com)
