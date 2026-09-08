@@ -24,11 +24,12 @@ source bootstrap.sh
 ./install_pkgs.sh
 ```
 
-Install only NVM or RVM, or install both selectively:
+Install NVM, RVM, or Oh My Zsh individually, or combine the options:
 
 ```bash
 ./install_pkgs.sh --nvm
 ./install_pkgs.sh --rvm
+./install_pkgs.sh --oh-my-zsh
 ./install_pkgs.sh --nvm --rvm
 ```
 
