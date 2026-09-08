@@ -2,11 +2,22 @@
 export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 
-if [[ -x "${HOME}/.homebrew/bin/brew" ]]; then
+ROOTLESS_BREW_PREFIX_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/homebrew/rootless-prefix"
+ROOTLESS_BREW_PREFIX=""
+
+if [[ -r "${ROOTLESS_BREW_PREFIX_FILE}" ]]; then
+  IFS= read -r ROOTLESS_BREW_PREFIX < "${ROOTLESS_BREW_PREFIX_FILE}"
+fi
+
+if [[ "${ROOTLESS_BREW_PREFIX}" == /* && -x "${ROOTLESS_BREW_PREFIX}/bin/brew" ]]; then
+  eval "$("${ROOTLESS_BREW_PREFIX}/bin/brew" shellenv)"
+elif [[ -x "${HOME}/.homebrew/bin/brew" ]]; then
   eval "$("${HOME}/.homebrew/bin/brew" shellenv)"
 elif [[ -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+unset ROOTLESS_BREW_PREFIX ROOTLESS_BREW_PREFIX_FILE
 
 if command -v brew &>/dev/null; then
   BREW_PREFIX=$(brew --prefix)
