@@ -18,6 +18,7 @@ Usage: ${0##*/} [OPTIONS]
   -a, --all                  Install Homebrew, Oh My Zsh, RVM, and NVM.
   -n, --nvm                  Install NVM only.
   -r, --rvm                  Install RVM only.
+  -z, --oh-my-zsh            Install Oh My Zsh only.
       --rootless-brew [PATH] Install Homebrew without sudo (default: ${ROOTLESS_BREW_PREFIX}).
   -h, --help                 Show this help.
 
@@ -38,6 +39,10 @@ while (( $# > 0 )); do
       ;;
     -r|--rvm)
       INSTALL_RVM=true
+      SELECTION_MADE=true
+      ;;
+    -z|--oh-my-zsh)
+      INSTALL_OH_MY_ZSH=true
       SELECTION_MADE=true
       ;;
     --rootless-brew)
