@@ -34,21 +34,36 @@ Install only NVM or RVM, or install both selectively:
 
 Use `./install_pkgs.sh --all` to explicitly install every supported package.
 
-To install Homebrew under `~/.homebrew` without sudo or administrator access:
+To install Homebrew under `/opt/homebrew` without invoking sudo:
 
 ```bash
 ./install_pkgs.sh --rootless-brew
 ```
 
+Pass a different absolute installation path when needed:
+
+```bash
+./install_pkgs.sh --rootless-brew "${HOME}/.homebrew"
+```
+
+The current user must be able to write to the selected directory (or its parent
+if the directory does not exist). If necessary, have an administrator create
+the installation directory and grant the user ownership before running the
+script.
+
+The selected path is saved under `${XDG_CONFIG_HOME:-$HOME/.config}/homebrew`
+and loaded by `.zshrc` in future shells. `/opt/homebrew` and the legacy
+`~/.homebrew` path remain automatic fallbacks.
+
 Combine it with `--all` to use rootless Homebrew while installing everything:
 
 ```bash
-./install_pkgs.sh --all --rootless-brew
+./install_pkgs.sh --all --rootless-brew /opt/homebrew
 ```
 
-This uses a nonstandard Homebrew prefix. Some formulae may need to build from
-source, and casks or packages requiring system-level changes will still not work
-without administrator access. A working Git installation is required.
+A custom path may be a nonstandard Homebrew prefix, so some formulae may need to
+build from source. Casks or packages requiring system-level changes will still
+not work without administrator access. A working Git installation is required.
 
 ### Install Homebrew formulae
 

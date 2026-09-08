@@ -2,7 +2,8 @@
 set -euo pipefail
 
 ROOTLESS_BREW=false
-ROOTLESS_BREW_PREFIX="${HOME}/.homebrew"
+ROOTLESS_BREW_PREFIX="/opt/homebrew"
+ROOTLESS_BREW_PREFIX_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/homebrew/rootless-prefix"
 INSTALL_ALL=false
 INSTALL_BREW=false
 INSTALL_NVM=false
@@ -14,14 +15,14 @@ usage() {
   cat <<EOF
 Usage: ${0##*/} [OPTIONS]
 
-  -a, --all             Install Homebrew, Oh My Zsh, RVM, and NVM.
-  -n, --nvm             Install NVM only.
-  -r, --rvm             Install RVM only.
-      --rootless-brew   Install Homebrew under ${ROOTLESS_BREW_PREFIX} without sudo.
-  -h, --help            Show this help.
+  -a, --all                  Install Homebrew, Oh My Zsh, RVM, and NVM.
+  -n, --nvm                  Install NVM only.
+  -r, --rvm                  Install RVM only.
+      --rootless-brew [PATH] Install Homebrew without sudo (default: ${ROOTLESS_BREW_PREFIX}).
+  -h, --help                 Show this help.
 
 With no options, the script behaves like --all. Options can be combined.
-Use --all --rootless-brew to install everything with rootless Homebrew.
+Use --all --rootless-brew [PATH] to install everything with rootless Homebrew.
 EOF
 }
 
@@ -43,6 +44,10 @@ while (( $# > 0 )); do
       ROOTLESS_BREW=true
       INSTALL_BREW=true
       SELECTION_MADE=true
+      if (( $# > 1 )) && [[ "$2" != -* ]]; then
+        ROOTLESS_BREW_PREFIX="$2"
+        shift
+      fi
       ;;
     -h|--help)
       usage
@@ -57,6 +62,19 @@ while (( $# > 0 )); do
   shift
 done
 
+if [[ "${ROOTLESS_BREW}" == true ]]; then
+  # Strip a trailing slash so path and parent checks behave consistently.
+  ROOTLESS_BREW_PREFIX="${ROOTLESS_BREW_PREFIX%/}"
+
+  if [[ -z "${ROOTLESS_BREW_PREFIX}" || "${ROOTLESS_BREW_PREFIX}" != /* ]]; then
+    echo "error: the rootless Homebrew install path must be an absolute path" >&2
+    exit 2
+  elif [[ "${ROOTLESS_BREW_PREFIX}" == "/" ]]; then
+    echo "error: / cannot be used as the rootless Homebrew install path" >&2
+    exit 2
+  fi
+fi
+
 if [[ "${SELECTION_MADE}" == false || "${INSTALL_ALL}" == true ]]; then
   INSTALL_BREW=true
   INSTALL_NVM=true
@@ -67,23 +85,43 @@ fi
 # Install Homebrew
 if [[ "${INSTALL_BREW}" == true ]]; then
   if [[ "${ROOTLESS_BREW}" == true ]]; then
+    ROOTLESS_BREW_PARENT="${ROOTLESS_BREW_PREFIX%/*}"
+    [[ -n "${ROOTLESS_BREW_PARENT}" ]] || ROOTLESS_BREW_PARENT="/"
+
     if [[ -x "${ROOTLESS_BREW_PREFIX}/bin/brew" ]]; then
-      echo "Rootless Homebrew already installed, activating it."
+      echo "Rootless Homebrew already installed in ${ROOTLESS_BREW_PREFIX}, activating it."
     else
       if ! command -v git &>/dev/null || ! git --version &>/dev/null; then
         echo "error: rootless Homebrew installation requires a working git command" >&2
         exit 1
-      elif [[ -e "${ROOTLESS_BREW_PREFIX}" ]]; then
-        echo "error: ${ROOTLESS_BREW_PREFIX} already exists but does not contain a working brew" >&2
+      elif [[ -e "${ROOTLESS_BREW_PREFIX}" && ! -d "${ROOTLESS_BREW_PREFIX}" ]]; then
+        echo "error: ${ROOTLESS_BREW_PREFIX} exists but is not a directory" >&2
+        exit 1
+      elif [[ -d "${ROOTLESS_BREW_PREFIX}" && -n "$(ls -A "${ROOTLESS_BREW_PREFIX}")" ]]; then
+        echo "error: ${ROOTLESS_BREW_PREFIX} is not empty and does not contain a working brew" >&2
+        exit 1
+      elif [[ -d "${ROOTLESS_BREW_PREFIX}" && ! -w "${ROOTLESS_BREW_PREFIX}" ]]; then
+        echo "error: ${ROOTLESS_BREW_PREFIX} is not writable by the current user" >&2
+        echo "Have an administrator create it and grant you ownership, then run this script again." >&2
+        exit 1
+      elif [[ ! -e "${ROOTLESS_BREW_PREFIX}" && ! -d "${ROOTLESS_BREW_PARENT}" ]]; then
+        echo "error: ${ROOTLESS_BREW_PARENT} does not exist" >&2
+        echo "Create the parent directory before running this script again." >&2
+        exit 1
+      elif [[ ! -e "${ROOTLESS_BREW_PREFIX}" && ! -w "${ROOTLESS_BREW_PARENT}" ]]; then
+        echo "error: ${ROOTLESS_BREW_PARENT} is not writable by the current user" >&2
+        echo "Have an administrator create ${ROOTLESS_BREW_PREFIX} and grant you ownership, then run this script again." >&2
         exit 1
       fi
 
       echo "Installing Homebrew without admin access in ${ROOTLESS_BREW_PREFIX}."
-      echo "Note: the nonstandard prefix is unsupported and some formulae may build from source."
       git clone --depth=1 https://github.com/Homebrew/brew "${ROOTLESS_BREW_PREFIX}"
     fi
 
     eval "$("${ROOTLESS_BREW_PREFIX}/bin/brew" shellenv)"
+    mkdir -p "${ROOTLESS_BREW_PREFIX_FILE%/*}"
+    printf '%s\n' "${ROOTLESS_BREW_PREFIX}" > "${ROOTLESS_BREW_PREFIX_FILE}"
+    echo "Saved the rootless Homebrew path to ${ROOTLESS_BREW_PREFIX_FILE}."
   elif ! command -v brew &>/dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   else
